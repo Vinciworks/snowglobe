@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Snow Globe</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+  <style>
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: #035;
+      background-image: radial-gradient(
+        circle,
+        transparent 50%,
+        rgba(0, 0, 0, 0.3)
+      );
+      background-size: cover;
+    }
+
+    #toy {      
+      font-size: 1vmin;
+      transform-origin: 50% 120%;
+      position: relative;
+      width: 60em;
+      height: 90em;
+      margin: 5% auto;
+
+    }
+
+    #globe {
+      width: 60em;
+      height: 60em;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: auto;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1em rgba(255, 255, 255, 0.4);
+      background-clip: border-box;
+      background: radial-gradient(
+          circle at 52% 55%,
+          transparent 60%,
+          rgba(255, 255, 255, 0.7)
+        ),
+        radial-gradient(
+          circle at 50% 30%,
+          transparent 50%,
+          rgba(255, 255, 255, 0.2)
+        );
+      overflow: hidden;
+      perspective: 10000px;
+      perspective-origin: 50% 75%;
+      pointer-events: none;
+    }
+
+    .flakes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    .flake {
+      position: absolute;
+      transform-style: preserve-3d;
+      top: -6em;
+      width: 2em;
+      height: 2em;
+      background: #fff;
+      opacity: 0.5;
+      transform-origin: 0% 250%;
+      border-radius: 40%;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="toy" onclick="Globe.shake()">
+    <div id="globe">
+      <div class="flakes"></div>    
+      <div class="flakes"></div>
+    </div>
+    <div id="stand"></div>
+  </div>
+
+  <script>
+    !(function initSnowGlobe() {
+      window.Globe = {
+        shake: shake
+      };
+
+      var n = 150;
+      var flakes = [];
+      var tls = [];
+      var flakesContainers = document.getElementsByClassName("flakes");
+      var toy = document.getElementById('toy');
+      var h = flakesContainers[0].offsetHeight;
+
+      var i = n;
+
+      var masterTl = new TimelineMax();
+
+      while (i--) {
+        flakes[i] = createFlake();
+        flakesContainers[flakes[i].y > 0.5 ? 1 : 0].appendChild(flakes[i]);
+        masterTl.add(createFlakeTimeline(i), 10 * Math.random());
+      }
+
+      TweenLite.fromTo(
+        masterTl,
+        7,
+        { timeScale: 4 },
+        { timeScale: 1, ease: Expo.easeOut }
+      );
+
+      function createFlakeTimeline(i) {
+        var tl = new TimelineMax({ repeat: -1 });
+        var rand1 = Math.random();
+        var rand2 = Math.random();
+        var plusOrMinus = rand2 < 0.5 ? -1 : 1;
+
+        tl.fromTo(
+          flakes[i],
+          12 * (1 - flakes[i].y * 0.7),
+          {
+            y: 0,
+            rotationX: 360 * rand1,
+            rotationY: -30 * rand2
+          },
+          {
+            y: h,
+            rotationX: plusOrMinus * (360 * Math.random() + 180) + 360 * rand1,
+            rotationY: 15 * Math.random() + -30 * rand2,
+            ease: Power0.easeIn
+          }
+        );
+
+        tl.from(flakes[i], 0.5, { opacity: 0 }, 0);
+
+        tl.to(flakes[i], 0.2, { opacity: 0 }, "-=0.2");
+
+        return tl;
+      }
+
+      function createFlake() {
+        var flake = document.createElement("div");
+        flake.className = "flake";
+
+        // polar coords
+        var r = Math.sqrt(Math.random());
+        var t = Math.random() * 2 * 3.14159;
+
+        // cartesion in [0,1]x[0,1]
+        var x = r * Math.cos(t) * 0.5 + 0.5;
+        var y = r * Math.sin(t) * 0.5 + 0.5;
+
+        TweenLite.set(flake, {
+          scale: y * 0.5 + 0.5,
+          rotationZ: Math.random() * 90,
+          opacity: y * 0.8 + 0.2
+        });
+
+        flake.style.left = x * 100 + "%";
+        flake.x = x;
+        flake.y = y;
+
+        return flake;
+      }
+
+      function shake() {
+        var ease = Expo.easeOut;
+        var dur = 5;
+        TweenLite.fromTo(
+          toy,
+          dur / 2,
+          { rotation: -15 },
+          { rotation: 0, ease: Elastic.easeOut.config(1, 0.15) }
+        );
+        TweenLite.fromTo(
+          masterTl,
+          dur * 1.5,
+          { timeScale: 50 },
+          { timeScale: 1, ease: Expo.easeOut }
+        );
+        TweenLite.fromTo(
+          flakesContainers[0],
+          dur * 1,
+          { rotationZ: 0 },
+          { rotationZ: 720, ease: Power4.easeOut }
+        );
+        TweenLite.fromTo(
+          flakesContainers[1],
+          dur * 0.6,
+          { rotationZ: 0 },
+          { rotationZ: -1080, ease: Power4.easeOut }
+        );
+      }
+    })();
+
+  </script>
+</body>
+</html>
