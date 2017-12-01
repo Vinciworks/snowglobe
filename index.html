@@ -34,14 +34,14 @@
       width: auto;
       height: auto;
       transform-origin: 50% 90%;
-      cursor: pointer;
     }
 
-    #toy * {
+    #globe * {
       pointer-events: none;
     }
 
     #globe {
+      cursor: pointer;
       width: 60em;
       height: 60em;
       position: absolute;
@@ -55,7 +55,6 @@
       overflow: hidden;
       perspective: 10000px;
       perspective-origin: 50% 75%;
-      pointer-events: none;
     }
 
     .flakes, #reflection {
@@ -118,9 +117,13 @@
       background-position: 50%;
       background-repeat: no-repeat;
       opacity: 0.2;
+      transition: 0.7s;
       transform: rotate(12deg) skew(6deg);
     }
 
+    #toy-wrapper:hover #clickme{
+      opacity: 0.5;
+    }
     .animal {
       position: absolute;
       bottom: 3em;
@@ -162,6 +165,7 @@
       var tls = [];
       var flakesContainers = document.getElementsByClassName("flakes");
       var toy = document.getElementById('toy');
+      var globe = document.getElementById('globe');
       var h = flakesContainers[0].offsetHeight;
 
       var i = n;
@@ -256,7 +260,7 @@
         0
       );
 
-      toy.onclick = shake;
+      globe.onclick = shake;
 
       function shake(e) {        
         var rect = e.currentTarget.getBoundingClientRect();
@@ -269,7 +273,7 @@
         TweenLite.fromTo(
           toy,
           1.5,
-          { rotation: shakeDirection * 45 },
+          { rotation: shakeDirection * 90 },
           { rotation: 0, ease: Elastic.easeOut.config(1.5, 0.15), immediateRender: false, override: 'all' },
           0
         );
