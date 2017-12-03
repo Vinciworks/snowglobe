@@ -94,6 +94,7 @@
       width: 100%;
       height: 30em;
       left: 0;
+      pointer-events:none;
     }
 
     #toy-shadow {
@@ -121,9 +122,6 @@
       transform: rotate(12deg) skew(6deg);
     }
 
-    #toy-wrapper:hover #clickme{
-      opacity: 0.5;
-    }
     .animal {
       position: absolute;
       bottom: 3em;
@@ -135,10 +133,17 @@
       background-size: contain;
       background-position: 50%;
       background-repeat: no-repeat;
+      opacity: 0;
+      visibility: hidden;
     }
 
     .fox {
       background-image: url(img/fox.png);
+    }
+
+    .fox2 {
+      background-image: url(img/fox.png);
+      filter: invert(1);
     }
   </style>
 </head>
@@ -150,6 +155,7 @@
       <div id="globe">
         <div class="flakes"></div>    
         <div class="animal fox"></div>
+        <div class="animal fox2"></div>
         <div class="flakes"></div>
         <div id="reflection"></div>
       </div>
@@ -163,10 +169,15 @@
       var fallSpeed = 7;
       var flakes = [];
       var tls = [];
-      var flakesContainers = document.getElementsByClassName("flakes");
+      var flakesContainers = document.getElementsByClassName('flakes');
       var toy = document.getElementById('toy');
       var globe = document.getElementById('globe');
       var h = flakesContainers[0].offsetHeight;
+      var animals = document.getElementsByClassName('animal');
+      var animalCount = animals.length;
+      var animalIndex = 0;
+
+      slideInAnimal(0);
 
       var i = n;
 
@@ -278,7 +289,47 @@
           0
         );
 
-        shakeTl.play(0);          
+        shakeTl.play(0);     
+
+        slideOutAnimal(animalIndex);
+        animalIndex = (animalIndex + 1) % animalCount;
+        slideInAnimal(animalIndex);
+      }
+
+
+      function slideInAnimal(i) {
+        TweenLite.fromTo(
+          animals[i], 
+          0.5, 
+          {
+            xPercent: 100,
+            rotation: 0
+          },
+          {
+            xPercent: 0,
+            onStart: function () {
+              TweenLite.set(animals[i], {autoAlpha: 1})
+            }
+          }
+        );
+      }
+
+      function slideOutAnimal(i) {
+        TweenLite.fromTo(
+          animals[i], 
+          0.5, 
+          {
+            xPercent: 0,
+            rotation: 0
+          },
+          {
+            xPercent: -100,
+            rotation: -270,
+            onComplete: function () {
+              TweenLite.set(animals[i], {autoAlpha: 0})
+            }
+          }
+        );
       }
     })();
 
