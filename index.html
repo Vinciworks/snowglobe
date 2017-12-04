@@ -99,12 +99,12 @@
 
     #toy-shadow {
       position: absolute;
-      bottom: -10em;
+      bottom: -15em;
       width: 200%;
       margin-left: -50%;
       height: 20em;
       left: 0;
-      background-image: radial-gradient(closest-side, rgba(0,0,0,.5) 10%, transparent);
+      background-image: radial-gradient(closest-side, rgba(0,0,0,.3) 0%, transparent 90%);
     }
 
     #clickme {
@@ -171,13 +171,14 @@
       var tls = [];
       var flakesContainers = document.getElementsByClassName('flakes');
       var toy = document.getElementById('toy');
+      var shadow = document.getElementById('toy-shadow');
       var globe = document.getElementById('globe');
       var h = flakesContainers[0].offsetHeight;
       var animals = document.getElementsByClassName('animal');
       var animalCount = animals.length;
       var animalIndex = 0;
 
-      slideInAnimal(0);
+      TweenLite.set(animals[0], {autoAlpha: 1, x: 0})
 
       var i = n;
 
@@ -253,21 +254,21 @@
         masterTl,
         dur * 1.5,
         { timeScale: 50 },
-        { timeScale: 1, ease: Expo.easeOut, immediateRender: false , override: 'all' },
+        { timeScale: 1, ease: Expo.easeOut, immediateRender: false , overwrite: 'all' },
         0
       );
       shakeTl.fromTo(
         flakesContainers[0],
         dur * 1,
         { rotationZ: 0 },
-        { rotationZ: 720, ease: Power4.easeOut, immediateRender: false , override: 'all' },
+        { rotationZ: 720, ease: Power4.easeOut, immediateRender: false , overwrite: 'all' },
         0
       );
       shakeTl.fromTo(
         flakesContainers[1],
         dur * 0.6,
         { rotationZ: 0 },
-        { rotationZ: -1080, ease: Power4.easeOut, immediateRender: false, override: 'all' },
+        { rotationZ: -1080, ease: Power4.easeOut, immediateRender: false, overwrite: 'all' },
         0
       );
 
@@ -285,7 +286,15 @@
           toy,
           1.5,
           { rotation: shakeDirection * 90 },
-          { rotation: 0, ease: Elastic.easeOut.config(1.5, 0.15), immediateRender: false, override: 'all' },
+          { rotation: 0, ease: Elastic.easeOut.config(1.5, 0.15), immediateRender: false, overwrite: 'all' },
+          0
+        );
+
+        TweenLite.fromTo(
+          shadow,
+          1.5,
+          { xPercent: shakeDirection * 10 },
+          { xPercent: 0, ease: Elastic.easeOut.config(1.5, 0.15), immediateRender: false, overwrite: 'all' },
           0
         );
 
@@ -303,13 +312,14 @@
           0.5, 
           {
             xPercent: 100,
-            rotation: 0
+            rotation: 0,
+            autoAlpha: 1,
           },
           {
             xPercent: 0,
-            onStart: function () {
-              TweenLite.set(animals[i], {autoAlpha: 1})
-            }
+            autoAlpha: 1,
+            immediateRender: false, 
+            overwrite: 'all'
           }
         );
       }
@@ -320,14 +330,13 @@
           0.5, 
           {
             xPercent: 0,
-            rotation: 0
+            autoAlpha: 1
           },
           {
             xPercent: -100,
-            rotation: -270,
-            onComplete: function () {
-              TweenLite.set(animals[i], {autoAlpha: 0})
-            }
+            autoAlpha: 0,
+            immediateRender: false, 
+            overwrite: 'all'
           }
         );
       }
