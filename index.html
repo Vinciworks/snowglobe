@@ -165,7 +165,7 @@
 
   <script>
     !(function initSnowGlobe() {
-      var n = 250;
+      var n = 200;
       var fallSpeed = 7;
       var flakes = [];
       var tls = [];
@@ -192,9 +192,9 @@
 
       TweenLite.fromTo(
         masterTl,
-        7,
-        { timeScale: 4 },
-        { timeScale: 1, ease: Expo.easeOut }
+        4,
+        { timeScale: 3 },
+        { timeScale: 1, ease: Expo.easeOut}
       );
 
       function createFlakeTween(i) {
