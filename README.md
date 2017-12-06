@@ -1,0 +1,33 @@
+# VinciSnowGlobe
+
+by Rafi Miller, 6 December 2017
+
+## Overview
+
+This is a snow globe. There is snow inside a globe. The snow falls from the top of the globe to the bottom of the globe. 
+
+## Usage
+
+Click on the globe to shake it.
+
+When the globe shakes, the current animal leaves and the next animal appears. It's like a carousel slider, but cooler because it's inside a snow globe.
+
+## Developer notes
+
+### Add an animal
+
+To add an animal to the globe, open `index.html` and add an `.animal` to the `#globe`. The JS will include it in the carousel.
+
+Add a second class to the div to give it a background image, e.g. `.animal.fox`.
+
+### Mathematics
+
+The flakes’ starting positions are uniformly distributed in the unit circle in the *x-z* plane. 
+
+The *x* coordinate is mapped from [-1, 1] to a percentage from 0% to 100%, which becomes the snowflake's `left` property. 
+
+The *z* coordinate is mapped from [-1, 1] to [0, 1], and determines the snowflake's size, opacity, and velocity, to create the illusion of depth. Using `matrix3D` for these effects isn't possible because we are in an `overflow: hidden` div.
+
+Each flake has a fixed random rotation on its *z* axis.
+
+Each flake also has a random initial and final rotation on both its *x* and *y* axis, and rotation is tweened during the flake's fall. The flake's `transform-origin` is set outside the flake, so that its rotation in the *x-y* plane causes it to spiral at a random angle as it falls.
