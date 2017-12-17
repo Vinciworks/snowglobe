@@ -157,6 +157,7 @@
   </style>
 </head>
 <body>
+  <button id="mute">Mute</button>
   <div id="snow-globe">
     <div id="toy-shadow"></div>
     <div id="clickme"></div>
@@ -191,6 +192,58 @@
       var animals = document.getElementsByClassName('animal');
       var animalCount = animals.length;
       var animalIndex = 0;
+
+      var shakeAudio = new Audio('shake.mp3');
+      var tuneAudio = new Audio('tune.mp3');
+
+      var muteEnabled = false;
+      var tuneVolume = 0.2;
+
+      tuneAudio.loop = true;
+      tuneAudio.volume = tuneVolume;
+      playAudio(tuneAudio);
+
+      document.getElementById('mute').addEventListener('click', toggleMute);
+
+      function toggleMute() {
+        muteEnabled = !muteEnabled;
+
+        if (muteEnabled) {
+          pauseAudio(tuneAudio);
+        } else {
+          playAudio(tuneAudio);
+        }
+      }
+
+      function pauseAudio(file) {   
+        TweenLite.to(
+          file, 
+          0.3, 
+          {
+            volume: 0,
+            onComplete: function () {
+              file.pause();
+            },
+            overwrite: 'all',
+            ease: Expo.easeOut
+          }
+        );
+      }
+
+      function playAudio(file) {   
+        TweenLite.to(
+          file, 
+          1, 
+          {
+            volume: tuneVolume,
+            onStart: function () {
+              file.play();
+            },
+            overwrite: 'all',
+            ease: Expo.easeIn
+          }
+        );
+      }
 
       TweenLite.set(animals[0], {autoAlpha: 1, x: 0})
 
@@ -293,6 +346,11 @@
         var offsetX = e.clientX - rect.left;
         var offsetY = e.clientY - rect.top;
         var shakeDirection = (rect.width / offsetX > 2) ? 1 : -1;
+
+        if (!muteEnabled) {
+          shakeAudio.currentTime = 0;
+          shakeAudio.play();
+        }
 
         TweenLite.set(toy, {transformOrigin: offsetX + 'px ' + offsetY + 'px '});
 
