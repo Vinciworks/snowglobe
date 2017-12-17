@@ -20,9 +20,13 @@ To add an animal to the globe, open `index.html` and add an `.animal` to the `#g
 
 Add a second class to the div to give it a background image, e.g. `.animal.fox`.
 
+### Sizing
+
+All dimensions in the snow globe are `em`-based, so you can scale it to any size by setting the `font-size` of `#snow-globe`. It is currently set to `0.9vmin`.
+
 ### Mathematics
 
-The flakes’ starting positions are taken randomly from a uniform distribution on the unit circle in the *x-z* plane at the top of the globe. 
+The flakesâ€™ starting positions are taken randomly from a uniform distribution on the unit circle in the *x-z* plane at the top of the globe. 
 
 The *x* coordinate from [-1, 1] maps to a percentage from 0% to 100%, which becomes the snowflake's `left` property. 
 
