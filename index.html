@@ -8,7 +8,7 @@
     body {
       height: 100vh;
       overflow: hidden;
-      background: #163E79;
+      background: #84c0ff;
       background-image: radial-gradient(
         circle at 50% 80%,
         rgba(50, 110, 218, 0.2) 20%,
@@ -33,11 +33,12 @@
 
 
     #snow-globe {      
-      font-size: 0.9vmin;
+      font-size: 0.7vmin;
       position: relative;
       width: 60em;
       height: 82em;
       margin: 3% auto;
+      margin-top: 5%;
     }
 
     #toy {
@@ -137,6 +138,57 @@
       transform: rotate(12deg) skew(6deg);
     }
 
+    #footer {
+    margin-top: -20px;
+}
+
+#footer a {
+  display: inline-block;
+    margin: 2% 4%;
+    background: url('footer-sprite.png') no-repeat;
+  background-position: 0 0;
+  background-size: 200%;
+  width: 6%;
+  height: 0;
+  padding-bottom: 6%;
+  cursor: pointer;
+}
+
+#footer .blog {
+  background-position: 0 0;
+}
+
+#footer .blog:hover {
+  background-position: 100% 0;
+}
+
+#footer .twitter {
+  background-position: 0 50%;
+}
+
+#footer .twitter:hover {
+  background-position: 100% 50%;
+}
+
+#footer .web {
+  background-position: 0 100%;
+}
+
+#footer .web:hover {
+  background-position: 100% 100%;
+}
+
+.links-wrapper {
+    margin: -2% auto 0;
+    list-style-type: none;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding: 1% 0;
+    background-color: #000;
+}
+
+
     .animal {
       position: absolute;
       bottom: 4em;
@@ -173,6 +225,8 @@
 </head>
 <body>
   <div id="mute"></div>
+  <h1>Seasons Greetings</h1>
+  <h2>Wishing you a chilled holiday</h2>
   <div id="snow-globe">
     <div id="toy-shadow"></div>
     <div id="clickme"></div>
@@ -191,7 +245,20 @@
       </div>
       <div id="stand"></div>
     </div>
+
   </div>
+  <div>
+    <h2>From the team at VinciWorks</h2>
+  </div>
+  <div id="footer">
+    
+      <div class="links-wrapper">
+        <a class="blog" href="http://vinciworks.com/blog/" target="_blank"></a>
+        <a class="twitter" href="https://twitter.com/vinciworks" target="_blank"></a>
+        <a class="web" href="https://vinciworks.com/" target="_blank"></a>
+      </div>
+    </div>
+
 
   <script>
     !(function initSnowGlobe() {
