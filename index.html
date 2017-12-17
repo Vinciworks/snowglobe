@@ -124,12 +124,12 @@
 
     .animal {
       position: absolute;
-      bottom: 3em;
+      bottom: 4em;
       left: 0;
       right: 0;
       margin: 0 auto;
       width: 100%;
-      height: 30em;
+      height: 33em;
       background-size: contain;
       background-position: 50%;
       background-repeat: no-repeat;
@@ -137,14 +137,23 @@
       visibility: hidden;
     }
 
-    .fox {
-      background-image: url(img/fox.png);
+    .fox     {background-image: url(img/fox.png);}
+    .deer    {background-image: url(img/deer.png); height: 45em;}
+    .man     {background-image: url(img/man.png);  height: 48em;}
+    .owl     {background-image: url(img/owl.png);}
+    .yeti    {background-image: url(img/yeti.png);  height: 50em;}
+    .rabbit  {background-image: url(img/rabbit.png); height: 35em;}
+    .penguin {background-image: url(img/penguin.png);  height: 36em;}
+
+    .man {animation: shiver 0.25s infinite;transform-origin: 50% 97%}
+
+    @keyframes shiver {
+      0% {transform: skew(-2deg)}
+      50% {transform: skew(0deg)}
+      100% {transform: skew(-2deg)}
     }
 
-    .fox2 {
-      background-image: url(img/fox.png);
-      filter: invert(1);
-    }
+
   </style>
 </head>
 <body>
@@ -155,7 +164,12 @@
       <div id="globe">
         <div class="flakes"></div>    
         <div class="animal fox"></div>
-        <div class="animal fox2"></div>
+        <div class="animal owl"></div>
+        <div class="animal man"></div>
+        <div class="animal yeti"></div>
+        <div class="animal rabbit"></div>
+        <div class="animal penguin"></div>
+        <div class="animal deer"></div>
         <div class="flakes"></div>
         <div id="reflection"></div>
       </div>
