@@ -17,6 +17,21 @@
       background-size: cover;
     }
 
+    #mute {
+      position: fixed;
+      top: 1em;
+      left: 1em;
+      height: 2em;
+      width: 2em;
+      background: url(img/unmute.svg) no-repeat;
+      background-size: contain;
+    }
+
+    .-mute #mute {
+      background-image: url(img/mute.svg);
+    }
+
+
     #snow-globe {      
       font-size: 0.9vmin;
       position: relative;
@@ -157,7 +172,7 @@
   </style>
 </head>
 <body>
-  <button id="mute">Mute</button>
+  <div id="mute"></div>
   <div id="snow-globe">
     <div id="toy-shadow"></div>
     <div id="clickme"></div>
@@ -200,7 +215,7 @@
       var tuneVolume = 0.2;
 
       tuneAudio.loop = true;
-      tuneAudio.volume = tuneVolume;
+      tuneAudio.volume = 0;
       playAudio(tuneAudio);
 
       document.getElementById('mute').addEventListener('click', toggleMute);
@@ -209,8 +224,10 @@
         muteEnabled = !muteEnabled;
 
         if (muteEnabled) {
+          document.body.classList.add('-mute');
           pauseAudio(tuneAudio);
         } else {
+          document.body.classList.remove('-mute');
           playAudio(tuneAudio);
         }
       }
@@ -218,7 +235,7 @@
       function pauseAudio(file) {   
         TweenLite.to(
           file, 
-          0.3, 
+          0.6, 
           {
             volume: 0,
             onComplete: function () {
@@ -233,14 +250,14 @@
       function playAudio(file) {   
         TweenLite.to(
           file, 
-          1, 
+          2, 
           {
             volume: tuneVolume,
             onStart: function () {
               file.play();
             },
             overwrite: 'all',
-            ease: Expo.easeIn
+            ease: Power3.easeIn
           }
         );
       }
