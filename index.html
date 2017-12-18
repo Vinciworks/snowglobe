@@ -50,7 +50,8 @@
     h1 {
       margin: 0.5rem;
       font-style: normal;
-      font-size: 2.4rem;
+      font-size: 2.6rem;
+      line-height: 1;
       letter-spacing: 0.06em;
       /*font-weight: 700;*/
     }
@@ -60,7 +61,7 @@
       font-style: normal;
       text-decoration: none;
       font-size: 0.8em;
-      margin: 0 0.5ch;
+      padding: 1ch 0.5ch;
     }
 
     #mute {
@@ -112,7 +113,7 @@
       left: 0;
       margin: auto;
       border-radius: 50%; 
-      background: url(img/globe.jpg);
+      background: #173f7d url(img/globe.jpg);
       background-position: 50%;
       background-size: cover;
       overflow: hidden;
@@ -218,13 +219,13 @@
       visibility: hidden;
     }
 
-    .fox     {background-image: url(img/fox.png);}
-    .deer    {background-image: url(img/deer.png); height: 45em;}
-    .man     {background-image: url(img/man.png);  height: 48em;}
-    .owl     {background-image: url(img/owl.png);}
-    .yeti    {background-image: url(img/yeti.png);  height: 50em;}
-    .rabbit  {background-image: url(img/rabbit.png); height: 35em;}
-    .penguin {background-image: url(img/penguin.png);  height: 36em;}
+    .fox     {background-image: url(img/sequence/fox1.png);     height: 25.8em;}
+    .deer    {background-image: url(img/sequence/deer1.png);    height: 46em;  }
+    .man     {background-image: url(img/man.png);               height: 45.4em;}
+    .owl     {background-image: url(img/sequence/owl1.png);     height: 21.8em;}
+    .yeti    {background-image: url(img/sequence/yeti1.png);    height: 60em;  }
+    .rabbit  {background-image: url(img/sequence/rabbit1.png);  height: 22.7em;}
+    .penguin {background-image: url(img/sequence/penguin1.png); height: 25.1em;}
 
     .man {animation: shiver 0.2s infinite;transform-origin: 50% 97%}
 
@@ -257,13 +258,13 @@
       <div id="toy">
         <div id="globe">
           <div class="flakes"></div>    
-          <div class="animal fox"></div>
-          <div class="animal owl"></div>
-          <div class="animal man"></div>
-          <div class="animal yeti"></div>
-          <div class="animal rabbit"></div>
-          <div class="animal penguin"></div>
-          <div class="animal deer"></div>
+          <div data-animal="fox" class="animal fox"></div>
+          <div data-animal="owl" class="animal owl"></div>
+          <div data-animal="man" class="animal man"></div>
+          <div data-animal="yeti" class="animal yeti"></div>
+          <div data-animal="rabbit" class="animal rabbit"></div>
+          <div data-animal="penguin" class="animal penguin"></div>
+          <div data-animal="deer" class="animal deer"></div>
           <div class="flakes"></div>
           <div id="reflection"></div>
         </div>
@@ -300,12 +301,95 @@
       var animalCount = animals.length;
       var animalIndex = 0;
 
+      var i, iMax;
+      var j, jMax;
+      var sequences = {
+        deer: 9,
+        fox: 9,
+        owl: 10,
+        penguin: 6,
+        rabbit: 8,
+        yeti: 8
+      };
+
+      var sequenceCount;
+      var animalName;
+      
+      for (i = 0, iMax = animals.length; i < iMax; i++) {
+        animalName = animals[i].dataset.animal;
+        sequenceCount = sequences[animalName];
+        images = [];
+        positions = [];
+        
+        for (j = 1, jMax = sequenceCount; j <= jMax; j++) {
+          images.push('url(img/sequence/' + animalName + j + '.png)');
+          positions.push('50% 200em');
+        }
+
+        positions[0] = '50% 100%';
+
+        animals[i].style.backgroundImage = images.join(',');
+        animals[i].style.backgroundPosition = positions.join(',');
+      }
+
+      function preloadImg(src) {
+        (new Image()).src = src;
+      } 
+
+      function getPositionString(activeIndex, count) {
+        var positions = [];
+
+        for (var j = 1, jMax = count; j <= jMax; j++) {
+          positions.push('50% 200em');
+        }
+
+        positions[activeIndex - 1] = '50% 100%';
+        return positions.join(',');
+      }
+
+      window.runAnimalSequence = function runAnimalSequence(animalEl) {
+        var animal = animalEl.dataset.animal;
+
+        if (sequences[animal]) {
+          animalEl.yoyo = !animalEl.yoyo;
+          animalFrame(animalEl, animal, animalEl.yoyo ? 1 : sequences[animal], animalEl.yoyo);
+        }
+      }
+
+      function animalFrame(animalEl, animal, j, yoyo) {
+        if (!yoyo) {
+          var callback = (j <= 1) 
+            ? null
+            : function () {
+                animalFrame(animalEl, animal, j - 1, yoyo)
+              };
+        } else {
+          var callback = (j >= sequences[animal]) 
+            ? null
+            : function () {
+                animalFrame(animalEl, animal, j + 1, yoyo)
+              };
+        }
+        
+        console.log(yoyo, j);
+        TweenLite.set(
+          animalEl,
+          {
+            backgroundPosition: getPositionString(j, sequences[animal]),
+            onComplete: callback,
+            delay: 0.03
+          }
+        )
+      }
+
+      var animalSequenceInterval = setInterval(function () {
+        runAnimalSequence(animals[animalIndex]); 
+      }, 3000)
+
       var shakeAudio = new Audio('shake.mp3');
       var tuneAudio = new Audio('tune.mp3');
 
       var muteEnabled = false;
-      var tuneVolume = 0.2;
-
       tuneAudio.loop = true;
       tuneAudio.volume = 0;
       playAudio(tuneAudio);
@@ -342,23 +426,23 @@
       function playAudio(file) {   
         TweenLite.to(
           file, 
-          2, 
+          3, 
           {
-            volume: tuneVolume,
+            volume: 0.1,
             onStart: function () {
               file.play();
             },
             overwrite: 'all',
-            ease: Power3.easeIn
+            ease: Power1.easeOut
           }
         );
       }
 
       TweenLite.set(animals[0], {autoAlpha: 1, x: 0})
 
-      var i = n;
 
       var masterTl = new TimelineMax();
+      i = n;
 
       while (i--) {
         flakes[i] = createFlake();
