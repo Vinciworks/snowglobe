@@ -50,10 +50,14 @@
     h1 {
       margin: 0.5rem;
       font-style: normal;
-      font-size: 2.6rem;
+      font-size: 2.4rem;
       line-height: 1;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       font-weight: 700;
+    }
+
+    h3 {
+      line-height: 1.5;
     }
 
     a:link, a:visited {
@@ -80,11 +84,11 @@
 
 
     #snow-globe {      
-      font-size: 0.85vh;
+      font-size: 0.82vh;
       position: relative;
       width: 60em;
       height: 75em;
-      margin: 2rem auto;
+      margin: 2rem auto 2.5rem;
       /*margin-top: 5%;*/
     }
 
@@ -188,12 +192,12 @@
     }
 
     @media (max-aspect-ratio: 1/1) {
-      #clickme {      
+      #clickme {        
         position: absolute;
-        right: -18em;
+        right: -10em;
         top: 0;
-        width: 33em;
-        height: 3.9em;
+        width: 30em;
+        height: 2.9em;
         background-image: url(img/clickme.png);
         background-size: contain;
         background-position: 50%;
@@ -248,6 +252,9 @@
   h1 .apos {
     margin: 0 -0.1ch;
   }
+  h3 span {
+    display: inline-block;
+  }
   </style>
 </head>
 <body>
@@ -277,7 +284,7 @@
 
     </div>
     <div>
-      <h3>Wishing you a chilled holiday, from the team at VinciWorks</h3>
+      <h3>Wishing you a chilled holiday, <span>from the team at VinciWorks</span></h3>
     </div>
     <div id="footer">
       
