@@ -258,10 +258,10 @@
       <div id="toy">
         <div id="globe">
           <div class="flakes"></div>    
-          <div data-animal="fox" class="animal fox"></div>
+          <div data-animal="fox" data-yoyo="1" class="animal fox"></div>
           <div data-animal="deer" class="animal deer"></div>
           <div data-animal="man" class="animal man"></div>
-          <div data-animal="rabbit" class="animal rabbit"></div>
+          <div data-animal="rabbit" data-yoyo="1" class="animal rabbit"></div>
           <div data-animal="owl" class="animal owl"></div>
           <div data-animal="yeti" class="animal yeti"></div>
           <div data-animal="penguin" class="animal penguin"></div>
@@ -351,23 +351,29 @@
         var animal = animalEl.dataset.animal;
 
         if (sequences[animal]) {
-          animalEl.yoyo = !animalEl.yoyo;
-          animalFrame(animalEl, animal, animalEl.yoyo ? 1 : sequences[animal], animalEl.yoyo);
+          animalEl.reverse = !animalEl.reverse;
+          animalFrame(animalEl, animal, animalEl.reverse ? 1 : sequences[animal], animalEl.reverse);
         }
       }
 
-      function animalFrame(animalEl, animal, j, yoyo) {
-        if (!yoyo) {
-          var callback = (j <= 1) 
-            ? null
+      function animalFrame(animalEl, animal, j, reverse) {
+        var yoyo = (reverse && animalEl.dataset.yoyo)
+          ? function () {
+              runAnimalSequence(animalEl)
+            }
+          : null;
+          
+        var callback = (j <= 1) 
+          ? yoyo
+          : function () {
+              animalFrame(animalEl, animal, j - 1, reverse)
+            };
+
+        if (reverse) {
+          callback = (j >= sequences[animal]) 
+            ? yoyo
             : function () {
-                animalFrame(animalEl, animal, j - 1, yoyo)
-              };
-        } else {
-          var callback = (j >= sequences[animal]) 
-            ? null
-            : function () {
-                animalFrame(animalEl, animal, j + 1, yoyo)
+                animalFrame(animalEl, animal, j + 1, reverse)
               };
         }
         
