@@ -4,7 +4,7 @@ by Rafi Miller, 6 December 2017
 
 ## Overview
 
-This is a snow globe. There is snow inside a globe. The snow falls from the top of the globe to the bottom of the globe. 
+This is a snow globe. There is snow inside a globe. The snow falls from the top of the globe to the bottom of the globe. [Click here to see a sample of the snow globe](http://vinciworks.com/landing_pages/seasons_greetings/2017). Feel free to use this snow globe to share season spirit on your site.
 
 ## Usage
 
