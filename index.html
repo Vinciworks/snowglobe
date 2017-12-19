@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Snow Globe</title>
+  <title>Season’s Greetings from VinciWorks</title>
   <script src="TweenMax.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700');
@@ -244,13 +244,17 @@
     height: 100vh;
     overflow: hidden;
   }
+
+  h1 .apos {
+    margin: 0 -0.1ch;
+  }
   </style>
 </head>
 <body>
   <div id="wrapper">
     <div id="mute"></div>
     <div class="logo"></div>
-    <h1>Seasons Greetings</h1>
+    <h1>Season<span class="apos">’</span>s Greetings</h1>
     <!-- <h2>Wishing you a chilled holiday</h2> -->
     <div id="snow-globe">
       <div id="toy-shadow"></div>
@@ -362,7 +366,7 @@
               runAnimalSequence(animalEl)
             }
           : null;
-          
+
         var callback = (j <= 1) 
           ? yoyo
           : function () {
