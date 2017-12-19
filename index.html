@@ -386,14 +386,15 @@
           {
             backgroundPosition: getPositionString(j, sequences[animal]),
             onComplete: callback,
-            delay: 0.03
+            delay: 0.02,
+            overwrite: 'all'
           }
         )
       }
 
       var animalSequenceInterval = setInterval(function () {
         runAnimalSequence(animals[animalIndex]); 
-      }, 3000)
+      }, 4000);
 
       var shakeAudio = new Audio('shake.mp3');
       var tuneAudio = new Audio('tune.mp3');
