@@ -399,9 +399,13 @@
         )
       }
 
-      var animalSequenceInterval = setInterval(function () {
-        runAnimalSequence(animals[animalIndex]); 
-      }, 4000);
+      window.addEventListener('load', function () {
+        runAnimalSequence(animals[animalIndex]);
+
+        setInterval(function () {
+          runAnimalSequence(animals[animalIndex]); 
+        }, 4000);
+      })
 
       var shakeAudio = new Audio('shake.mp3');
       var tuneAudio = new Audio('tune.mp3');
